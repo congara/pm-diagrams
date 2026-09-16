@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Return Decision Tree</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500;600&family=Noto+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color-paper: #f5f5f5; --color-ink: #2d3142; --color-muted: #4f5d75; --color-soft: #7a8399;
+      --color-rule: rgba(45,49,66,0.12); --color-accent: #eb6c36;
+      --font-sans: 'Geist', system-ui, sans-serif;
+      --font-serif: 'Instrument Serif', 'Noto Serif', 'Times New Roman', serif;
+      --font-mono: 'Geist Mono', ui-monospace, Menlo, monospace;
+    }
+    body { font-family: var(--font-sans); background: var(--color-paper); min-height: 100vh; padding: 3rem 2rem; color: var(--color-ink); }
+    .container { max-width: 1200px; margin: 0 auto; }
+    .header { margin-bottom: 2.5rem; }
+    .header-eyebrow { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: var(--color-muted); margin-bottom: 0.75rem; }
+    h1 { font-family: var(--font-serif); font-size: clamp(1.75rem, 3vw + 1rem, 2.5rem); font-weight: 400; letter-spacing: -0.02em; line-height: 1.1; margin-bottom: 0.5rem; }
+    .subtitle { font-size: 1rem; line-height: 1.55; color: var(--color-muted); max-width: 62ch; }
+    .diagram-container { overflow-x: auto; }
+    svg { width: 100%; min-width: 900px; display: block; }
+    .cards { display: grid; grid-template-columns: 1.1fr 1fr 0.95fr; gap: 1rem; margin-top: 1.5rem; }
+    @media (max-width: 860px) { .cards { grid-template-columns: 1fr; } }
+    .card { background: #ffffff; border-radius: 6px; border: 1px solid var(--color-rule); padding: 1.25rem; }
+    .card-header { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.875rem; padding-bottom: 0.875rem; border-bottom: 1px solid rgba(45,49,66,0.08); }
+    .card-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .card-dot.ink { background: var(--color-ink); } .card-dot.muted { background: var(--color-muted); } .card-dot.coral { background: var(--color-accent); }
+    .card h3 { font-size: 0.875rem; font-weight: 600; letter-spacing: -0.005em; }
+    .card ul { list-style: none; color: var(--color-muted); font-size: 0.8125rem; line-height: 1.55; }
+    .card li { margin-bottom: 0.35rem; padding-left: 0.875rem; position: relative; }
+    .card li::before { content: '\2014'; position: absolute; left: 0; color: rgba(45,49,66,0.25); font-size: 0.75rem; }
+    .footer { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(45,49,66,0.10); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; color: var(--color-soft); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <p class="header-eyebrow">ikas · Yeni İade Ayarları · 16 Eylül 2026</p>
+      <h1>Return Decision Tree</h1>
+      <p class="subtitle">Bir iptal ya da iade talebinin kaç noktada dallandığı, ve bu dallanmalardan hangisinin talep anında verildiği, hangisinin satıcı tarafından ayarda önceden belirlendiği.</p>
+    </div>
+
+    <div class="diagram-container">
+      <svg viewBox="0 0 1280 1264" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="iade-karar-agaci-title iade-karar-agaci-desc">
+        <title id="iade-karar-agaci-title">Return Decision Tree</title>
+        <desc id="iade-karar-agaci-desc">Bir iptal veya iade talebinin karar ağacı: önce eşleşen kural aranır, sonra ürün durumu (paketleme durumu) iptal mi iade mi olduğunu belirler; iptal tarafı onay moduna göre iki yola, iade tarafı iade edilebilirlik ve onay moduna göre ayrılır; manuel onay tamamen manuel return, otomatik onay iade yöntemine göre iki yol; toplam yedi uçtan uca yol vardır.</desc>
+        <defs>
+          <marker id="arrow" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0 0, 8 3, 0 6" fill="#4f5d75"/></marker>
+        </defs>
+        <rect width="100%" height="100%" fill="#f5f5f5"/>
+
+        <line x1="640" y1="88" x2="640" y2="112" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="750" y1="164" x2="1000" y2="164" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="640" y1="216" x2="640" y2="248" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <path d="M 544,292 H 308 Q 300,292 300,300 V 348" fill="none" stroke="#4f5d75" stroke-width="1.2"/>
+        <path d="M 736,292 H 812 Q 820,292 820,300 V 344" fill="none" stroke="#4f5d75" stroke-width="1.2"/>
+        <rect x="862" y="146" width="26" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="875" y="155" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">YOK</text>
+        <rect x="648" y="226" width="26" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="661" y="235" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">VAR</text>
+        <rect x="373" y="274" width="98" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="422" y="283" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">OLUŞTURULDU VB.</text>
+        <rect x="828" y="316" width="110" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="883" y="325" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">TESLİM EDİLDİ VB.</text>
+        <rect x="560" y="40" width="160" height="48" rx="24" fill="#f5f5f5"/>
+        <rect x="560" y="40" width="160" height="48" rx="24" fill="rgba(45,49,66,0.03)" stroke="rgba(45,49,66,0.30)" stroke-width="1"/>
+        <text x="640.0" y="61" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Request</text>
+        <text x="640.0" y="76" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">storefront · müşteri</text>
+        <polygon points="640,112 750,164 640,216 530,164" fill="#f5f5f5"/>
+        <polygon points="640,112 750,164 640,216 530,164" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1"/>
+        <text x="640" y="153" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Rule</text>
+        <text x="640" y="167" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">match?</text>
+        <text x="640" y="183" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">yönlendirme · gün</text>
+        <rect x="1000" y="140" width="160" height="48" rx="24" fill="#f5f5f5"/>
+        <rect x="1000" y="140" width="160" height="48" rx="24" fill="rgba(45,49,66,0.03)" stroke="rgba(45,49,66,0.30)" stroke-width="1"/>
+        <text x="1080.0" y="161" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Request Blocked</text>
+        <text x="1080.0" y="176" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">kural yok · gün aşımı dahil</text>
+        <polygon points="640,248 736,292 640,336 544,292" fill="#f5f5f5"/>
+        <polygon points="640,248 736,292 640,336 544,292" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="640" y="288" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Package Status</text>
+        <text x="640" y="304" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">paketleme durumu</text>
+        <g transform="translate(0,80)">
+        <rect x="80" y="316" width="440" height="324" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.14)" stroke-width="0.8"/>
+        <rect x="92" y="320" width="133" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="100" y="329" fill="rgba(45,49,66,0.50)" font-size="7" font-family="'Geist Mono', monospace" letter-spacing="0.14em">CANCELLATION · 2 PATHS</text>
+        <rect x="600" y="316" width="580" height="772" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.14)" stroke-width="0.8"/>
+        <rect x="612" y="320" width="100" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="620" y="329" fill="rgba(45,49,66,0.50)" font-size="7" font-family="'Geist Mono', monospace" letter-spacing="0.14em">RETURN · 4 PATHS</text>
+        <line x1="300" y1="268" x2="300" y2="348" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="820" y1="264" x2="820" y2="344" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <path d="M 396,392 H 432 Q 440,392 440,400 V 452" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="300" y1="436" x2="300" y2="524" stroke="#4f5d75" stroke-width="1.2"/>
+        <path d="M 440,496 V 520 Q 440,528 432,528 H 304" fill="none" stroke="#4f5d75" stroke-width="1.2"/>
+        <line x1="300" y1="532" x2="300" y2="568" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="930" y1="392" x2="1000" y2="392" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="820" y1="440" x2="820" y2="476" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <path d="M 916,520 H 1092 Q 1100,520 1100,528 V 580" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="1100" y1="624" x2="1100" y2="812" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <path d="M 1100,856 V 1032 Q 1100,1040 1092,1040 H 900" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="820" y1="564" x2="820" y2="692" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <path d="M 724,736 H 688 Q 680,736 680,744 V 812" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <path d="M 916,736 H 932 Q 940,736 940,744 V 812" fill="none" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <path d="M 680,856 V 892 Q 680,900 688,900 H 816" fill="none" stroke="#4f5d75" stroke-width="1.2"/>
+        <path d="M 940,856 V 892 Q 940,900 932,900 H 824" fill="none" stroke="#4f5d75" stroke-width="1.2"/>
+        <line x1="820" y1="904" x2="820" y2="932" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <line x1="820" y1="980" x2="820" y2="1016" stroke="#4f5d75" stroke-width="1.2" marker-end="url(#arrow)"/>
+        <rect x="448" y="418" width="44" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="470" y="427" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">MANUEL</text>
+        <rect x="236" y="472" width="56" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="264" y="481" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">OTOMATİK</text>
+        <rect x="946" y="374" width="38" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="965" y="383" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">HAYIR</text>
+        <rect x="780" y="452" width="32" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="796" y="461" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">EVET</text>
+        <rect x="1108" y="546" width="44" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="1130" y="555" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">MANUEL</text>
+        <rect x="963" y="1022" width="74" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="1000" y="1031" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">STOĞA KABUL</text>
+        <rect x="756" y="622" width="56" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="784" y="631" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">OTOMATİK</text>
+        <rect x="610" y="772" width="62" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="641" y="781" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">KARGO APP</text>
+        <rect x="948" y="772" width="62" height="12" rx="2" fill="#f5f5f5"/>
+        <text x="979" y="781" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.06em">KENDİ KOD</text>
+        <polygon points="300,348 396,392 300,436 204,392" fill="#f5f5f5"/>
+        <polygon points="300,348 396,392 300,436 204,392" fill="rgba(45,49,66,0.02)" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="300" y="388" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Cancellation</text>
+        <text x="300" y="404" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">otomatik / manuel</text>
+        <rect x="376" y="452" width="128" height="44" rx="6" fill="#f5f5f5"/>
+        <rect x="376" y="452" width="128" height="44" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="440.0" y="471" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Merchant Approval</text>
+        <text x="440.0" y="486" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">satıcı onaylar</text>
+        <circle cx="300" cy="528" r="4" fill="#2d3142"/>
+        <rect x="220" y="568" width="160" height="48" rx="24" fill="#f5f5f5"/>
+        <rect x="220" y="568" width="160" height="48" rx="24" fill="rgba(45,49,66,0.03)" stroke="rgba(45,49,66,0.30)" stroke-width="1"/>
+        <text x="300.0" y="589" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Refund</text>
+        <text x="300.0" y="604" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">return adımı yok</text>
+        <polygon points="820,344 930,392 820,440 710,392" fill="#f5f5f5"/>
+        <polygon points="820,344 930,392 820,440 710,392" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="820" y="388" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Returnable?</text>
+        <text x="820" y="404" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">iade edilemez ürün</text>
+        <rect x="1000" y="368" width="160" height="48" rx="24" fill="#f5f5f5"/>
+        <rect x="1000" y="368" width="160" height="48" rx="24" fill="rgba(45,49,66,0.03)" stroke="rgba(45,49,66,0.30)" stroke-width="1"/>
+        <text x="1080.0" y="389" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Request Blocked</text>
+        <text x="1080.0" y="404" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">iade edilemez ürün</text>
+        <polygon points="820,476 916,520 820,564 724,520" fill="#f5f5f5"/>
+        <polygon points="820,476 916,520 820,564 724,520" fill="rgba(45,49,66,0.02)" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="820" y="516" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Return Approval</text>
+        <text x="820" y="532" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">otomatik / manuel</text>
+        <rect x="1036" y="580" width="128" height="44" rx="6" fill="#f5f5f5"/>
+        <rect x="1036" y="580" width="128" height="44" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="1100.0" y="599" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Merchant Approval</text>
+        <text x="1100.0" y="614" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">satıcı onaylar</text>
+        <rect x="1036" y="812" width="128" height="44" rx="6" fill="#f5f5f5"/>
+        <rect x="1036" y="812" width="128" height="44" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="1100.0" y="831" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Manual Return</text>
+        <text x="1100.0" y="846" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">kod + kargo satıcıda</text>
+        <polygon points="820,692 916,736 820,780 724,736" fill="#f5f5f5"/>
+        <polygon points="820,692 916,736 820,780 724,736" fill="rgba(45,49,66,0.02)" stroke="#4f5d75" stroke-width="1" stroke-dasharray="4,3"/>
+        <text x="820" y="732" fill="#2d3142" font-size="11" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Return Method</text>
+        <text x="820" y="748" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">yalnızca otomatikte</text>
+        <rect x="616" y="812" width="128" height="44" rx="6" fill="#f5f5f5"/>
+        <rect x="616" y="812" width="128" height="44" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="680.0" y="831" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Shipping App Code</text>
+        <text x="680.0" y="846" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">kargo uygulaması</text>
+        <rect x="876" y="812" width="128" height="44" rx="6" fill="#f5f5f5"/>
+        <rect x="876" y="812" width="128" height="44" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="940.0" y="831" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Static Code</text>
+        <text x="940.0" y="846" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">kendi kod · takip yok</text>
+        <circle cx="820" cy="900" r="4" fill="#2d3142"/>
+        <rect x="740" y="932" width="160" height="48" rx="6" fill="#f5f5f5"/>
+        <rect x="740" y="932" width="160" height="48" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="820.0" y="951" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Stock Receipt</text>
+        <text x="820.0" y="966" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">lokasyon ayardan</text>
+        <rect x="740" y="1016" width="160" height="48" rx="24" fill="#f5f5f5"/>
+        <rect x="740" y="1016" width="160" height="48" rx="24" fill="rgba(45,49,66,0.03)" stroke="rgba(45,49,66,0.30)" stroke-width="1"/>
+        <text x="820.0" y="1037" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Refund</text>
+        <text x="820.0" y="1052" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">ücret ayardan: 3 seçenek</text>
+        <text x="120" y="820" fill="#2d3142" font-size="14" font-style="italic" font-family="'Instrument Serif', serif">iptal 2 yol, iade 4 yol —</text>
+        <text x="120" y="840" fill="#2d3142" font-size="14" font-style="italic" font-family="'Instrument Serif', serif">dallanmanın ağırlığı</text>
+        <text x="120" y="860" fill="#2d3142" font-size="14" font-style="italic" font-family="'Instrument Serif', serif">iade tarafında</text>
+        <path d="M 232,868 Q 440,930 600,880" fill="none" stroke="rgba(45,49,66,0.40)" stroke-width="1" stroke-dasharray="4,3"/>
+        <circle cx="600" cy="880" r="2" fill="#2d3142"/>
+        <line x1="40" y1="1124" x2="1240" y2="1124" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
+        <text x="40" y="1142" fill="#4f5d75" font-size="8" font-family="'Geist Mono', monospace" letter-spacing="0.18em">LEGEND</text>
+        <rect x="40" y="1156" width="24" height="12" rx="6" fill="rgba(45,49,66,0.03)" stroke="rgba(45,49,66,0.30)" stroke-width="1"/>
+        <text x="72" y="1166" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Start / end</text>
+        <rect x="200" y="1156" width="24" height="12" rx="2" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="232" y="1166" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Step</text>
+        <polygon points="296,1162 308,1155 320,1162 308,1169" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <text x="328" y="1166" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Runtime decision</text>
+        <polygon points="456,1162 468,1155 480,1162 468,1169" fill="rgba(45,49,66,0.02)" stroke="#4f5d75" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="488" y="1166" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Settings branch — ayarda sabit, talep anında seçilmez</text>
+        <polygon points="736,1162 748,1155 760,1162 748,1169" fill="rgba(235,108,54,0.08)" stroke="#eb6c36" stroke-width="1"/>
+        <text x="768" y="1166" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Gate</text>
+        <circle cx="884" cy="1162" r="4" fill="#2d3142"/>
+        <text x="896" y="1166" fill="#4f5d75" font-size="9" font-family="'Geist', sans-serif">Merge</text>
+        </g>
+
+      </svg>
+    </div>
+
+    <div class="cards">
+      <div class="card">
+        <div class="card-header"><span class="card-dot coral"></span><h3>Decision Count</h3></div>
+        <ul>
+          <li><strong>7 uçtan uca yol.</strong> 2'si "talep açılamaz", 5'i refund ile bitiyor.</li>
+          <li><strong>3 talep anında karar</strong> — sistem her talepte değerlendiriyor: kural eşleşmesi, ürün durumu (paketleme durumu → iptal mi iade mi) ve yalnızca iade dalında iade edilebilirlik. Her biri 2 dal.</li>
+          <li><strong>3 ayarda sabit dallanma</strong> — satıcı önceden seçiyor, talep anında seçim yok: iptal onay modu, iade onay modu, iade yöntemi (2'şer dal; iade yöntemi yalnızca otomatik onayda).</li>
+          <li>Yani akış kalabalık görünse de gerçek runtime kararı üç tane; gerisi kural tablosundan okunuyor.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-dot ink"></span><h3>Non-branching Settings</h3></div>
+        <ul>
+          <li><strong>Stok lokasyonu</strong> — tek değer, yol değişmiyor.</li>
+          <li><strong>İade kargo ücreti</strong> — yolu değiştirmiyor ama refund tutarını değiştiriyor (düş · tahsil · işletme).</li>
+          <li><strong>İade nedenleri</strong> — müşterinin seçtiği veri, akışı yönlendirmiyor.</li>
+          <li>Bu üçü ağaçta düğüm değil, uç düğümlerin alt etiketinde parametre olarak duruyor.</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><span class="card-dot muted"></span><h3>Test Matrix</h3></div>
+        <ul>
+          <li>Yol bazında en az <strong>7 senaryo</strong>.</li>
+          <li>İade tarafındaki 3 refund yolu (manuel + 2 otomatik) × 3 kargo ücreti seçeneği = <strong>9</strong>.</li>
+          <li>Toplam en az <strong>13</strong>: açılamaz 2 + iptal 2 + iade 9.</li>
+          <li>Her kuralda gün sınırı ayrıca: sınırın içi, tam sınır, sınır dışı ("kural yok" yoluna düşmeli).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer">
+      <span>ikas · Yeni İade Ayarları · docs/diagrams/iade-karar-agaci.html</span>
+      <span>kaynak: iade-karar-agaci.gen.py</span>
+    </div>
+
+  </div>
+</body>
+</html>
