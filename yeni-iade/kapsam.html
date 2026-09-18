@@ -47,7 +47,7 @@
   <div class="container">
 
     <div class="header">
-      <p class="header-eyebrow">ikas · Yeni İade Ayarları · 16 Eylül 2026</p>
+      <p class="header-eyebrow">ikas · Yeni İade Ayarları · 18 Eylül 2026</p>
       <h1>Return Settings Scope Map</h1>
       <p class="subtitle">Bir iade ayarının hangi bölümlerden oluştuğu ve her bölümün neyi belirlediği. Kargo Ayarları sayfasındaki “İade Ayarı Ekle” ekranından çıkarıldı.</p>
     </div>
@@ -55,7 +55,7 @@
     <div class="diagram-container">
       <svg viewBox="0 0 1280 656" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="iade-kapsam-title iade-kapsam-desc">
         <title id="iade-kapsam-title">Return Settings Scope Map</title>
-        <desc id="iade-kapsam-desc">Bir iade ayarının kapsamı, iç içe kutular halinde: dış çerçeve iade ayarı, içinde yönlendirmeler, iptal ve iade kurallarını taşıyan kurallar bloğu, ve yalnızca iade kuralı eklenince görünen dört bölüm — iade nedenleri, iade yöntemi, stok lokasyonu, iade kargo ücreti.</desc>
+        <desc id="iade-kapsam-desc">Bir iade ayarının kapsamı, iç içe kutular halinde: dış çerçeve iade ayarı, içinde yönlendirmeler, iptal ve iade kurallarını taşıyan kurallar bloğu, ve yalnızca iade kuralı eklenince görünen üç bölüm — iade nedenleri, iade yöntemi, stok lokasyonu. Tasarımdaki dördüncü bölüm olan iade kargo ücreti kapsam dışına alındı.</desc>
         <rect width="100%" height="100%" fill="#f5f5f5"/>
 
         <!-- Outer: bir İade Ayarı -->
@@ -90,39 +90,32 @@
         <rect x="656" y="328" width="460" height="44" rx="6" fill="#f5f5f5"/>
         <rect x="656" y="328" width="460" height="44" rx="6" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.20)" stroke-width="1" stroke-dasharray="4,3"/>
         <text x="886.0" y="348" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Non-returnable Products</text>
-        <text x="886.0" y="364" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">toggle · seçili ürünlerde iade talebi açılamaz · iptali etkilemez</text>
+        <text x="886.0" y="364" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">toggle · seçili ürünlerde talep açılamaz · iptali de engeller</text>
         <!-- İade kuralı eklenmeden görünmeyen bölümler -->
         <rect x="72" y="404" width="1136" height="128" rx="8" fill="rgba(45,49,66,0.02)" stroke="rgba(45,49,66,0.14)" stroke-width="0.8"/>
         <rect x="84" y="408" width="219" height="12" rx="2" fill="#f5f5f5"/>
         <text x="92" y="417" fill="rgba(45,49,66,0.45)" font-size="7" font-family="'Geist Mono', monospace" letter-spacing="0.14em">VISIBLE ONLY AFTER A RETURN RULE IS ADDED</text>
-        <rect x="100" y="432" width="252" height="88" rx="6" fill="#f5f5f5"/>
-        <rect x="100" y="432" width="252" height="88" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+        <rect x="100" y="432" width="340" height="88" rx="6" fill="#f5f5f5"/>
+        <rect x="100" y="432" width="340" height="88" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
         <rect x="108" y="438" width="30" height="12" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
         <text x="123.0" y="447" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">LIST</text>
-        <text x="226.0" y="472" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Return Reasons</text>
-        <text x="226.0" y="488" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">hazır liste + özel</text>
-        <text x="226.0" y="502" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">sıralanabilir · storefront'ta çıkar</text>
-        <rect x="376" y="432" width="252" height="88" rx="6" fill="#f5f5f5"/>
-        <rect x="376" y="432" width="252" height="88" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
-        <rect x="384" y="438" width="32" height="12" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
-        <text x="400.0" y="447" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SHIP</text>
-        <text x="502.0" y="472" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Return Method</text>
-        <text x="502.0" y="488" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">yalnızca OTOMATİK onayda kod üretir</text>
-        <text x="502.0" y="502" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">kargo app veya kendi kargo kodun</text>
-        <rect x="652" y="432" width="252" height="88" rx="6" fill="#f5f5f5"/>
-        <rect x="652" y="432" width="252" height="88" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
-        <rect x="660" y="438" width="38" height="12" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
-        <text x="679.0" y="447" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STOCK</text>
-        <text x="778.0" y="472" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Stock Location</text>
-        <text x="778.0" y="488" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">iadeler tek lokasyona</text>
-        <text x="778.0" y="502" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">her işlemde seçilmiyor</text>
-        <rect x="928" y="432" width="252" height="88" rx="6" fill="#f5f5f5"/>
-        <rect x="928" y="432" width="252" height="88" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
-        <rect x="936" y="438" width="32" height="12" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
-        <text x="952.0" y="447" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">COST</text>
-        <text x="1054.0" y="472" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Return Shipping Fee</text>
-        <text x="1054.0" y="488" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">tutardan düş · müşteriden</text>
-        <text x="1054.0" y="502" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">tahsil · işletme karşılar</text>
+        <text x="270.0" y="472" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Return Reasons</text>
+        <text x="270.0" y="488" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">hazır liste + özel · sıralanabilir</text>
+        <text x="270.0" y="502" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">liste varsa müşteri seçmek zorunda</text>
+        <rect x="470" y="432" width="340" height="88" rx="6" fill="#f5f5f5"/>
+        <rect x="470" y="432" width="340" height="88" rx="6" fill="#ffffff" stroke="#2d3142" stroke-width="1"/>
+        <rect x="478" y="438" width="32" height="12" rx="2" fill="transparent" stroke="rgba(45,49,66,0.40)" stroke-width="0.8"/>
+        <text x="494.0" y="447" fill="#2d3142" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">SHIP</text>
+        <text x="640.0" y="472" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Return Method</text>
+        <text x="640.0" y="488" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">yalnızca OTOMATİK onayda kod üretir</text>
+        <text x="640.0" y="502" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">kargo app veya kendi kargo kodun</text>
+        <rect x="840" y="432" width="340" height="88" rx="6" fill="#f5f5f5"/>
+        <rect x="840" y="432" width="340" height="88" rx="6" fill="rgba(45,49,66,0.05)" stroke="#4f5d75" stroke-width="1"/>
+        <rect x="848" y="438" width="38" height="12" rx="2" fill="transparent" stroke="rgba(79,93,117,0.50)" stroke-width="0.8"/>
+        <text x="867.0" y="447" fill="#4f5d75" font-size="7" font-family="'Geist Mono', monospace" text-anchor="middle" letter-spacing="0.08em">STOCK</text>
+        <text x="1010.0" y="472" fill="#2d3142" font-size="12" font-weight="600" font-family="'Geist', sans-serif" text-anchor="middle">Stock Location</text>
+        <text x="1010.0" y="488" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">iadeler tek lokasyona · her işlemde seçilmiyor</text>
+        <text x="1010.0" y="502" fill="#4f5d75" font-size="9" font-family="'Geist Mono', monospace" text-anchor="middle">iptalde stok çıktığı lokasyona döner</text>
         <!-- Legend strip -->
         <line x1="40" y1="600" x2="1240" y2="600" stroke="rgba(45,49,66,0.10)" stroke-width="0.8"/>
         <text x="40" y="616" fill="#4f5d75" font-size="9" font-weight="500" font-family="'Geist Mono', monospace" letter-spacing="0.12em">LEGEND</text>
@@ -145,7 +138,7 @@
         <div class="card-header"><span class="card-dot coral"></span><h3>No Rule, No Flow</h3></div>
         <ul>
           <li><strong>İptal kuralı yoksa</strong> o yönlendirmede sipariş iptali hiç talep edilemez — "Sipariş İptali Gerçekleşemez" empty state'i çıkıyor.</li>
-          <li><strong>İade kuralı yoksa</strong> iade de talep edilemez. Üstelik alttaki dört bölüm (Nedenler, Yöntem, Stok, Ücret) ve üst anchor menü de görünmüyor.</li>
+          <li><strong>İade kuralı yoksa</strong> iade de talep edilemez. Üstelik alttaki üç bölüm (Nedenler, Yöntem, Stok) ve üst anchor menü de görünmüyor.</li>
           <li>Yani iki kural bloğu sadece ayar değil, <strong>akışı açan kapı</strong>. Story'de bu koşullu görünürlük açıkça yazılmalı.</li>
           <li>Tasarımdaki developer notları: "İade kuralı eklenince menü gelir" · "İade kuralı ekleye bastığı anda bu yeni sectionlar gelir".</li>
         </ul>
@@ -159,7 +152,7 @@
           <li>Altında <strong>otomatik / manuel onay</strong> seçimi — iptalde ve iadede birebir aynı. Manuel reddetme yolu değil ama <strong>tamamen manuel</strong>: satıcı onaylar, iade kodu ve kargo sürecini kendisi yürütür.</li>
           <li>Her iki blok da tekrarlanabilir — durum başına ayrı kural, ayrı gün limiti. Eski tekil "iade gün limiti" bu satıra gömülmüş.</li>
           <li><strong>Karıştırma:</strong> onay kararı <em>İade Kuralı</em>'nda; onaydan sonraki return'ün nasıl gönderileceği ayrı bir bölüm — <em>İade Yöntemi</em> — ve yalnızca otomatik onayda devreye girer.</li>
-          <li><strong>İade tarafındaki ekstra:</strong> "İade Edilemeyen Ürünleri Belirle" toggle'ı yalnızca iade kuralının altında; iptalde karşılığı yok. Kontrol ürün durumundan <em>sonra</em>, sadece iade dalında çalışır — listedeki ürün iptal edilebilir.</li>
+          <li><strong>İade tarafındaki ekstra:</strong> "İade Edilemeyen Ürünleri Belirle" toggle'ı yalnızca iade kuralının altında; iptalde karşılığı yok. Ama kontrol <strong>iptal dalında da çalışır</strong> (18 Eylül 2026 kararı): listedeki ürün için iptal talebi de açılamaz.</li>
         </ul>
       </div>
 
@@ -167,7 +160,7 @@
         <div class="card-header"><span class="card-dot muted"></span><h3>Design Fixes</h3></div>
         <ul>
           <li>"iadel edilebilir" yazım hatası — hem iptal hem iade kuralı ekranında.</li>
-          <li>İade Kargo Ücreti'ndeki üç seçeneğin açıklaması birbirinin aynısı ve konu dışı ("…sizin onayınızdan geçer").</li>
+          <li><strong>İade Kargo Ücreti bölümü tamamen kaldırılacak</strong> — kapsam dışı (18 Eylül 2026); anchor menüden de çıkacak.</li>
           <li>Üst menüde "İade Yönetimi", bölüm başlığında "İade Yöntemi" — tutarsız.</li>
           <li>İade Yöntemi → "Kendi Kargo Kodunla Gönder" uyarısı takip olmadığını söylüyor ama <strong>sürecin manuel yönetileceğini yazmıyor</strong> — metin eklenmeli.</li>
         </ul>
